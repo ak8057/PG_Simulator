@@ -1,0 +1,13 @@
+rules:
+
+  - cardPrefix: "1"
+    response: "APPROVED"
+
+  - cardPrefix: "5"
+    response: "DECLINED"
+
+  - cardPrefix: "80000"
+    response: "3DS_REQUIRED"
+
+  - amountGreaterThan: 10000
+    response: "DECLINED"

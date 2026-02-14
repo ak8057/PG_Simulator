@@ -4,40 +4,38 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.springframework.stereotype.Component;
 
+import com.payu.payu_sim.model.Transaction;
+
 @Component
 public class TransactionCache {
 
-    // Thread-safe cache
-    private ConcurrentHashMap<String, String> cache = new ConcurrentHashMap<>();
+    private ConcurrentHashMap<String, Transaction> cache =
+            new ConcurrentHashMap<>();
 
 
-    // Store transaction
-    public void put(String transactionId, String status) {
+    public void put(Transaction txn) {
 
-        cache.put(transactionId, status);
+        cache.put(txn.getTransactionId(), txn);
 
-        System.out.println("Cached: " + transactionId + " → " + status);
+        System.out.println("Stored transaction: " +
+                txn.getTransactionId());
     }
 
 
-    // Get transaction status
-    public String get(String transactionId) {
+    public Transaction get(String txnId) {
 
-        return cache.get(transactionId);
+        return cache.get(txnId);
     }
 
 
-    // Check if exists
-    public boolean exists(String transactionId) {
+    public boolean exists(String txnId) {
 
-        return cache.containsKey(transactionId);
+        return cache.containsKey(txnId);
     }
 
 
-    // Print all cache
-    public void printAll() {
+    public ConcurrentHashMap<String, Transaction> getAll() {
 
-        System.out.println("Current Cache: " + cache.toString());
+        return cache;
     }
-
 }
