@@ -11,8 +11,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
-import org.springframework.web.bind.annotation.GetMapping;
+// import org.springframework.web.bind.annotation.GetMapping;
 import com.payu.payu_sim.model.TransactionSummary;
+// import org.springframework.web.bind.annotation.PostMapping;
+// import org.springframework.web.bind.annotation.PathVariable;
 
 @RestController
 public class TransactionController {
@@ -30,7 +32,6 @@ public class TransactionController {
         return service.getStatus(txnId);
     }
 
-
     @PostMapping("/transaction")
     public TransactionResponse createTransaction(
             @RequestBody TransactionRequest request) {
@@ -38,11 +39,19 @@ public class TransactionController {
         return service.process(request);
     }
 
-    //for saving all transactions in memory and retrieving them with hashed card number
+    // for saving all transactions in memory and retrieving them with hashed card
+    // number
     @GetMapping("/transactions")
     public List<TransactionSummary> getAllTransactions() {
 
         return service.getAllTransactions();
+    }
+
+    @PostMapping("/transaction/{txnId}/complete-3ds")
+    public TransactionResponse complete3DS(
+            @PathVariable String txnId) {
+
+        return service.complete3DS(txnId);
     }
 
 }

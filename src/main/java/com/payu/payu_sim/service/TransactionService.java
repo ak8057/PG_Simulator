@@ -13,6 +13,7 @@ import java.util.List;
 
 import com.payu.payu_sim.model.TransactionSummary;
 import com.payu.payu_sim.util.CardMaskingUtil;
+import com.payu.payu_sim.model.TransactionStatus;
 
 @Service
 public class TransactionService {
@@ -34,7 +35,7 @@ public class TransactionService {
 
         Transaction txn = cache.get(txnId);
 
-        String status = txn.getStatus();
+        String status = txn.getStatus().name();
 
         return new TransactionResponse(
                 txnId,
@@ -56,7 +57,7 @@ public class TransactionService {
 
         return new TransactionResponse(
                 txnId,
-                txn.getStatus(),
+                txn.getStatus().name(),
                 "Transaction status retrieved successfully");
     }
 
@@ -74,11 +75,39 @@ public class TransactionService {
                             txn.getTransactionId(),
                             maskedCard,
                             txn.getAmount(),
-                            txn.getStatus(),
+                            txn.getStatus().name(),
                             txn.getTimestamp()));
         }
 
         return summaries;
+    }
+
+    public TransactionResponse complete3DS(String txnId) {
+
+        Transaction txn = cache.get(txnId);
+
+        if (txn == null) {
+
+            return new TransactionResponse(
+                    txnId,
+                    "NOT_FOUND",
+                    "Transaction not found");
+        }
+
+        if (txn.getStatus() != TransactionStatus.THREE_DS_REQUIRED) {
+
+            return new TransactionResponse(
+                    txnId,
+                    txn.getStatus().name(),
+                    "3DS not required for this transaction");
+        }
+
+        txn.setStatus(TransactionStatus.APPROVED);
+
+        return new TransactionResponse(
+                txnId,
+                "APPROVED",
+                "3DS authentication completed successfully");
     }
 
 }

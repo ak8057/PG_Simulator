@@ -6,16 +6,16 @@ public class Transaction {
     private String cardNumber;
     private double amount;
     private String expiry;
-    private String status;
-    private long timestamp;
+    private TransactionStatus status;
 
+    private long timestamp;
 
     public Transaction(
             String transactionId,
             String cardNumber,
             double amount,
             String expiry,
-            String status,
+            TransactionStatus status,
             long timestamp) {
 
         this.transactionId = transactionId;
@@ -25,7 +25,6 @@ public class Transaction {
         this.status = status;
         this.timestamp = timestamp;
     }
-
 
     public String getTransactionId() {
         return transactionId;
@@ -43,7 +42,7 @@ public class Transaction {
         return expiry;
     }
 
-    public String getStatus() {
+    public TransactionStatus getStatus() {
         return status;
     }
 
@@ -51,8 +50,8 @@ public class Transaction {
         return timestamp;
     }
 
-
-    public void setStatus(String status) {
+    public void setStatus(TransactionStatus status) {
         this.status = status;
     }
+
 }
